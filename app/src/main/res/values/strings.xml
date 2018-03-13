@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">HTTP Services App</string>
+    <string name="time_button_text">Date/Heure</string>
+    <string name="html_button_text">Texte HTML</string>
+    <string name="google_button_text">Google</string>
+    <string name="meteo_url_button_string">Meteo URL</string>
+    <string name="meteo_data_button_text">Meteo Data</string>
+</resources>
