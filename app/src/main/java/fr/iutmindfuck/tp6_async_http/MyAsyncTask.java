@@ -1,10 +1,6 @@
 package fr.iutmindfuck.tp6_async_http;
 
 import android.os.AsyncTask;
-import android.view.View;
-import android.webkit.WebView;
-import android.widget.ProgressBar;
-import android.widget.TextView;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -15,30 +11,30 @@ import java.net.URL;
 
 public class MyAsyncTask extends AsyncTask<Object, Void, String> {
 
-    private View viewToUpdate;
-    private ProgressBar progressBar;
+    private OnTaskCompleted onTaskCompleted;
+    private RequestType requestType;
 
-    MyAsyncTask(ProgressBar progressBar)
+    MyAsyncTask(OnTaskCompleted onTaskCompleted)
     {
-        this.progressBar = progressBar;
+        this.onTaskCompleted = onTaskCompleted;
     }
 
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
-        progressBar.setVisibility(View.VISIBLE);
+        onTaskCompleted.onTaskStart();
     }
 
     @Override
     protected String doInBackground(Object[] objects) {
-        switch ((RequestType) objects[0])
+        requestType = (RequestType) objects[0];
+
+        switch (requestType)
         {
             case TIME:
-                viewToUpdate = (TextView)objects[1];
                 return getTime();
 
             case WEATHER:
-                viewToUpdate = (WebView)objects[1];
                 return getWeather();
 
         }
@@ -109,15 +105,6 @@ public class MyAsyncTask extends AsyncTask<Object, Void, String> {
     protected void onPostExecute(String data) {
         super.onPostExecute(data);
 
-        if (viewToUpdate instanceof TextView)
-        {
-            ((TextView)viewToUpdate).setText(data);
-        }
-        else
-        {
-            ((WebView)viewToUpdate).loadData(data,"text/html; charset=utf-8","UTF-8");
-        }
-
-        progressBar.setVisibility(View.GONE);
+        onTaskCompleted.onTaskCompleted(requestType, data);
     }
 }

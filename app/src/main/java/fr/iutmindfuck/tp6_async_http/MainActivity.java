@@ -1,13 +1,14 @@
 package fr.iutmindfuck.tp6_async_http;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements OnTaskCompleted {
 
     private WebView webview;
     private ProgressBar progressBar;
@@ -24,7 +25,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void updateDayAndHour(View view) {
-        new MyAsyncTask(progressBar).execute(RequestType.TIME, findViewById(R.id.time));
+        new MyAsyncTask(this).execute(RequestType.TIME);
     }
 
     public void launchGoogle(View view)
@@ -45,6 +46,28 @@ public class MainActivity extends AppCompatActivity {
 
     public void displayMeteoData(View view)
     {
-        new MyAsyncTask(progressBar).execute(RequestType.WEATHER, webview);
+        new MyAsyncTask(this).execute(RequestType.WEATHER);
+    }
+
+    @Override
+    public void onTaskStart()
+    {
+        progressBar.setVisibility(View.VISIBLE);
+    }
+    @Override
+    public void onTaskCompleted(RequestType type, String data)
+    {
+        switch (type)
+        {
+            case TIME:
+                ((TextView)findViewById(R.id.time)).setText(data);
+                break;
+
+            case WEATHER:
+                webview.loadData(data,"text/html; charset=utf-8","UTF-8");
+                break;
+        }
+
+        progressBar.setVisibility(View.GONE);
     }
 }
