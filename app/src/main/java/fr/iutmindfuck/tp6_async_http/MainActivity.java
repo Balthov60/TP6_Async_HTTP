@@ -8,7 +8,7 @@ import android.webkit.WebViewClient;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-public class MainActivity extends AppCompatActivity implements OnTaskCompleted {
+public class MainActivity extends AppCompatActivity implements TaskCallbackHandler {
 
     private WebView webview;
     private ProgressBar progressBar;

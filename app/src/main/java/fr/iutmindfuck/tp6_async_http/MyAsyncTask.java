@@ -11,10 +11,10 @@ import java.net.URL;
 
 public class MyAsyncTask extends AsyncTask<Object, Void, String> {
 
-    private OnTaskCompleted onTaskCompleted;
+    private TaskCallbackHandler onTaskCompleted;
     private RequestType requestType;
 
-    MyAsyncTask(OnTaskCompleted onTaskCompleted)
+    MyAsyncTask(TaskCallbackHandler onTaskCompleted)
     {
         this.onTaskCompleted = onTaskCompleted;
     }
